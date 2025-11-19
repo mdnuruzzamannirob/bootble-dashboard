@@ -7,7 +7,7 @@ export default function CloseIcon({onClick}) {
     <div>
         <CloseOutlined
                   onClick={onClick}
-                  style={{ color: '#E4AF00', width:'16px', height:'16px' }} 
+                  style={{ color: '', width:'16px', height:'16px' }} 
                   className="cursor-pointer"
                 />
     </div>

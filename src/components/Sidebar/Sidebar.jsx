@@ -15,15 +15,15 @@ import './sidebar.css'
 const items = [
     { key: '/', icon: <AppstoreOutlined style={{ fontSize: '24px' }} />, label: <Link to="/">Dashboard</Link> },
     { key: '/user-management', icon: <HiOutlineUserCircle size={24} />, label: <Link to="/user-management">User Management</Link> },
-    { key: '/order-management', icon: <MdListAlt size={24} />, label: <Link to="/order-management">Order Management</Link> },
-    { key: '/category', icon: <MdOutlineCategory size={24} />, label: <Link to="/category">Categories</Link> },
-    { key: '/products', icon: <FiBox size={24} />, label: <Link to="/products">Products</Link> },
+    // { key: '/order-management', icon: <MdListAlt size={24} />, label: <Link to="/order-management">Order Management</Link> },
+    // { key: '/category', icon: <MdOutlineCategory size={24} />, label: <Link to="/category">Categories</Link> },
+    // { key: '/products', icon: <FiBox size={24} />, label: <Link to="/products">Products</Link> },
     {
         key: 'sub1',
-        label: 'Help & FAQs',
+        label: 'Contact & FAQs',
         icon: <MdOutlineStore size={24} />,
         children: [
-            { key: '/help-support', label: <Link to="/help-support">Help & Support</Link> },
+            { key: '/contact-support', label: <Link to="/contact-support">Contact Support</Link> },
             { key: '/FAQs', label: <Link to="/FAQs">FAQs</Link> },
 
         ],

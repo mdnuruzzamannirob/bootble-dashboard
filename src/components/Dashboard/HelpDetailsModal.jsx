@@ -28,7 +28,7 @@ export default function HelpDetailsModal({ open, onCancel, order }) {
 
       <div className="space-y-2 text-[15px] font-[Inter] text-[#333]">
         <div className="flex justify-between">
-          <span className="font-medium">Ticket ID:</span>
+          <span className="font-medium">ID:</span>
           <span className="text-right">#325345636</span>
         </div>
         <div className="flex justify-between">
@@ -36,13 +36,14 @@ export default function HelpDetailsModal({ open, onCancel, order }) {
           <span>12/08/24</span>
         </div>
         <div className="flex justify-between">
+          <span className="font-medium">Name:</span>
+          <span>Hari Danang</span>
+        </div>
+        <div className="flex justify-between">
           <span className="font-medium">Email:</span>
           <span>csilvers@rizon.com</span>
         </div>
-        <div className="flex justify-between">
-          <span className="font-medium">Phone Number:</span>
-          <span>(201) 555-0124</span>
-        </div>
+        
         <div className="flex justify-between">
           <span className="font-medium">Issue:</span>
           

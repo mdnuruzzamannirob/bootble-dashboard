@@ -31,7 +31,7 @@ const columns = [
 
   },
   {
-    title: 'Full Name',
+    title: 'User',
     key: 'name',
     render: (_, record) => (
       <Space>

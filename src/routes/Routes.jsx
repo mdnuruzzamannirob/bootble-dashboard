@@ -18,6 +18,7 @@ import Login from "../components/Logout/Login";
 import ForgetPassword from "../components/Logout/ForgetPassword";
 import CheckYourEmail from "../components/Logout/CheckYourEmail";
 import SetPassword from "../components/Logout/SetPassword";
+import Support from "../components/Dashboard/Support";
 
 
 
@@ -39,25 +40,25 @@ const router = createBrowserRouter([
         element: <User></User>,
 
       },
-      {
-        path: "/order-management",
-        element: <Orders></Orders>,
-      },
-      {
-        path: "/category",
-        element: <Category></Category>,
-      },
-      {
-        path: "/products",
-        element: <Products></Products>,
-      },
+      // {
+      //   path: "/order-management",
+      //   element: <Orders></Orders>,
+      // },
+      // {
+      //   path: "/category",
+      //   element: <Category></Category>,
+      // },
+      // {
+      //   path: "/products",
+      //   element: <Products></Products>,
+      // },
       {
         path: "/notifications",
         element: <Notification></Notification>,
       },
       {
-        path: "/help-support",
-        element: <HelpSupport></HelpSupport>,
+        path: "/contact-support",
+        element: <Support/>,
 
       },
 

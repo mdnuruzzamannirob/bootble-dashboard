@@ -1,6 +1,6 @@
 import React from 'react'
 import Barchart from './Barchart';
-import HelpCenter from './HelpCenter';
+import HelpCenter from './Support';
 import { Outlet } from 'react-router-dom';
 import Graph from './Graph';
 import FlexBox from './FlexBox';

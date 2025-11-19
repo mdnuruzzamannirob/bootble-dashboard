@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
-import { Table, Button } from 'antd';
+import { Table, Button, Space, Avatar } from 'antd';
 import { EyeOutlined, RollbackOutlined } from '@ant-design/icons';
 import HelpDetailsModal from './HelpDetailsModal';
 import ReplyModal from './ReplyModal'; // ✅ import your reply modal here
 import { Link } from 'react-router-dom';
-import viewSign from '/images/view.png';
+import viewSign from '../../assets/images/view.svg';
 import replySign from '/images/reply.png';
+import BackButton from '../SharedComponents/BackButton';
+import CustomPagination from '../SharedComponents/CustomPagination/CustomPagination';
+import userImg from '../../assets/images/user.png'
 
-export default function HelpCenter() {
+export default function Support() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
-
+  const [currentPage, setCurrentPage] = useState(1);
   const [isReplyModalVisible, setIsReplyModalVisible] = useState(false);
   const [selectedReply, setSelectedReply] = useState(null);
 
@@ -31,8 +34,8 @@ export default function HelpCenter() {
   };
 
   const handleReply = (record) => {
-    setSelectedReply(record);
-    setIsReplyModalVisible(true);
+    // setSelectedReply(record);
+    // setIsReplyModalVisible(true);
   };
 
   const handleReplyCancel = () => {
@@ -51,7 +54,7 @@ export default function HelpCenter() {
       ticketId: '#1233',
       date: '2/11/12',
       email: 'bockely@att.com',
-      mobileNumber: '(907) 555-0101',
+      name: 'Hari Danang',
       message: "I Didn't Receive My Referral R...",
     },
     {
@@ -59,7 +62,7 @@ export default function HelpCenter() {
       ticketId: '#1233',
       date: '5/27/15',
       email: 'csilvers@rizon.com',
-      mobileNumber: '(270) 555-0117',
+     name: 'Hari Danang',
       message: 'How Long Does It Take to Re...',
     },
     {
@@ -67,7 +70,7 @@ export default function HelpCenter() {
       ticketId: '#1233',
       date: '9/18/16',
       email: 'gamaho@gmail.com',
-      mobileNumber: '(219) 555-0114',
+      name: 'Hari Danang',
       message: 'Can I Refer Someone Outside...',
     },
     {
@@ -75,14 +78,14 @@ export default function HelpCenter() {
       ticketId: '#1233',
       date: '7/27/13',
       email: 'xterris@gmail.com',
-      mobileNumber: '(252) 555-0126',
+      name: 'Hari Danang',
       message: 'My Referral Signed Up, But I...',
     },
   ];
 
   const columns = [
     {
-      title: 'Ticket ID',
+      title: 'ID No.',
       dataIndex: 'ticketId',
       key: 'ticketId',
     },
@@ -94,16 +97,29 @@ export default function HelpCenter() {
       width: 220,
     },
     {
+    title: 'User',
+    key: 'name',
+    render: (_, record) => (
+      <Space>
+        <Avatar src={userImg}
+          style={{ width: 48, height: 48, borderRadius: 8 }}
+          shape="square"
+        />
+        {record.name}
+      </Space>
+    ),
+  },
+    {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
     },
-    {
-      title: 'Mobile Number',
-      dataIndex: 'mobileNumber',
-      key: 'mobileNumber',
-      align: 'center',
-    },
+    // {
+    //   title: 'Mobile Number',
+    //   dataIndex: 'mobileNumber',
+    //   key: 'mobileNumber',
+    //   align: 'center',
+    // },
     {
       title: 'Message',
       dataIndex: 'message',
@@ -165,16 +181,18 @@ export default function HelpCenter() {
       <div className="flex items-center justify-center">
         <div className="w-full bg-white rounded-2xl shadow-lg overflow-hidden">
           <div className="flex justify-between pl-4 pr-12 pt-6 pb-4">
-            <h2 className="inter-semibold">Help Center</h2>
-            <Link to="/help-center" className="font-[Inter] text-blue-700">
+           
+            <BackButton text="Support"></BackButton>
+            {/* <Link to="/help-center" className="font-[Inter] text-blue-700">
               View all
-            </Link>
+            </Link> */}
+            <p className='text-[#6b6bb4]'>Showing 10 out of  1239</p>
           </div>
 
           <Table
             dataSource={dataSource}
             columns={columns}
-            pagination={false}
+            pagination={CustomPagination({ currentPage, setCurrentPage })}
             bordered={false}
             className="rounded-lg overflow-hidden"
             rowClassName={(record, index) => (index === dataSource.length - 1 ? '' : '')}
