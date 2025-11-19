@@ -1,0 +1,46 @@
+/* Regular page */
+.custom-page {
+  margin: 0 4px;
+  font-weight: 500;
+}
+
+/* Pagination buttons (Previous/Next) */
+.pagination-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.pagination-btn .label {
+  color: #333;
+}
+
+.pagination-btn .arrow {
+  font-size: 14px;
+}
+
+
+/* Center the entire pagination block */
+.ant-pagination {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 8px;
+}
+
+/* Ensure page items are aligned nicely */
+.custom-page,
+.custom-page-active,
+.pagination-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Optional: prevent spacing inconsistency */
+.ant-pagination-item {
+  margin-inline: 0 !important;
+}

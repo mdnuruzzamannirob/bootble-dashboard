@@ -1,0 +1,15 @@
+/* Override Ant Design Radio checked color */
+.ant-radio-checked .ant-radio-inner {
+  border-color: #E4AF00 !important;
+  background-color: #E4AF00 !important;
+}
+
+/* When the radio is focused and checked (ring/focus shadow) */
+.ant-radio-wrapper:hover .ant-radio-inner,
+.ant-radio:hover .ant-radio-inner {
+  border-color: #E4AF00 !important;
+}
+
+.ant-radio-input:focus + .ant-radio-inner {
+  box-shadow: 0 0 0 3px rgba(228, 175, 0, 0.2); /* subtle golden focus shadow */
+}

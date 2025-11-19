@@ -1,0 +1,35 @@
+.custom-tabs .ant-tabs-tab {
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: #777474 !important;
+}
+
+.custom-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #121030 !important; /* Yellow active tab */
+}
+
+.custom-tabs .ant-tabs-ink-bar {
+  background-color: #121030!important; /* Yellow underline */
+}
+
+.custom-tabs .ant-tabs-nav::before {
+  border-bottom: none !important; /* Remove default bottom border */
+}
+
+.custom-placeholder::placeholder {
+  font-size: 16px !important;
+  color: #5C5C5C !important; /* Dark golden/yellow tone */
+  opacity: 0.8 !important; /* Ensure it's visible */
+}
+
+.custom-placeholder {
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* For password input fields */
+.ant-input-password input::placeholder {
+ font-size: 20px !important;
+  color: #5C5C5C !important; /* Dark golden/yellow tone */
+  opacity: 0.8 !important; /* Ensure it's visible */
+}

@@ -1,0 +1,76 @@
+import React, { useState } from 'react';
+import { Form, Input, Checkbox, Typography, Card } from 'antd';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import LoginPageButton from '../SharedComponents/LoginPageButton';
+import EmailInput from '../SharedComponents/EmailInput';
+import PasswordInput from '../SharedComponents/PasswordInput'; // Adjust the path
+import { Link } from 'react-router-dom'; 
+
+import './Login.css';
+
+const { Title, Text } = Typography;
+export default function ForgetPassword() {
+    const [formData, setFormData] = useState({ email: '', password: '' });
+
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const onFinish = (values) => {
+        console.log('Success:', values);
+    };
+    return (
+        <div style={{
+            height: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#EBEBFF',
+        }}>
+            <Card
+                style={{
+                    width: 630,
+                    height: 735,
+                    padding: '30px 20px',
+                    borderRadius: 24,
+                    boxShadow: '0 0 10px rgba(0,0,0,0.05)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center', 
+                    alignItems: 'stretch',
+                    
+                }}
+            >
+                <Title level={3} style={{ textAlign: 'center', fontFamily: 'Inter', fontSize: '32', fontWeight: '500' }}>Forget Password?</Title>
+                <Text type="secondary" style={{ display: 'block', textAlign: 'center', marginBottom: 44, color: '#333333', fontFamily: 'Inter', fontSize: '18' }}>
+                   Please enter your email to get verification code
+                </Text>
+
+                <Form
+                    name="login"
+                    layout="vertical"
+                    initialValues={{ remember: true }}
+                    onFinish={onFinish}
+                >
+                    <EmailInput
+                         
+                        label="Email address"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                    />
+
+                    
+
+
+                   
+
+                    <Form.Item style={{ marginTop: '24px' }}>
+                        <Link to="/check-email" ><LoginPageButton text="Continue"></LoginPageButton></Link>
+                    </Form.Item>
+                </Form>
+            </Card>
+        </div>
+    )
+}

@@ -1,0 +1,23 @@
+/* Login.css */
+.custom-yellow-checkbox .ant-checkbox-inner {
+  border-color: #121030 !important;
+  background-color: white !important;
+}
+
+.custom-yellow-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #121030 !important;
+  border-color: #121030 !important;
+}
+
+
+/* Login.css */
+.forget-password-link {
+  color: #333333 !important;  /* Force yellow color */
+  font-weight: 500;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+}
+
+.forget-password-link:hover {
+  text-decoration: underline;
+}

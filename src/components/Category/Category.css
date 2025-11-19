@@ -1,0 +1,50 @@
+.page-wrapper {
+  background-color: #fcf7e6;
+}
+
+/* Optional: Adjust Ant Design table cell spacing */
+.ant-table-cell {
+  font-size: 16px;
+}
+
+.ant-btn {
+  border-radius: 6px;
+}
+
+/* Pagination styling */
+.ant-pagination {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding-top: 16px;
+}
+
+/* Remove all horizontal lines (row borders) */
+.ant-table-tbody > tr > td {
+  border-bottom: none !important;
+}
+
+/* Optional: remove header bottom border */
+.ant-table-thead > tr > th {
+  border-bottom: none !important;
+}
+
+/* Table header (column titles) */
+.ant-table-thead > tr > th {
+  font-size: 18px;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}
+
+/* Table body (data cells) */
+.ant-table-tbody > tr > td {
+  font-size: 16px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+}
+
+.custom-table .ant-table-tbody > tr > td,
+.custom-table .ant-table-thead > tr > th {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}

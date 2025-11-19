@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+/* Poppins Font */
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.poppins-medium {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Inter Font */
+
+.inter-regular {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.inter-regular-2 {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+}
+.inter-medium {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 16px;
+}
+.inter-medium-2 {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 20px;
+}
+
+.inter-semibold {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 24px;
+}
+
+/* Override Ant Design submenu item alignment
+.custom-sidebar-menu .ant-menu-submenu .ant-menu-sub {
+  display: flex ;
+  flex-direction: column;
+  align-items: center;
+} */
+
+/* center the submenu item labels */
+.custom-sidebar-menu .ant-menu-submenu .ant-menu-sub .ant-menu-item {
+  padding-left: 0 !important;
+  text-align: center;
+  justify-content: center;
+  
+  
+}
+
+/* Remove any borders */
+.custom-sidebar-menu {
+  border-right: none !important;
+  box-shadow: none !important;
+  margin-left: 0px;
+  background-color: #EBEBFF !important;
+}
+
+/* adjust gap as needed */
+.custom-sidebar-menu .ant-menu-item,
+.custom-sidebar-menu .ant-menu-submenu {
+  margin-bottom: 10px !important; 
+}
+
+/*  Hover Style */
+.custom-sidebar-menu .ant-menu-item:hover,
+.custom-sidebar-menu .ant-menu-submenu-title:hover,
+.custom-sidebar-menu .ant-menu-sub .ant-menu-item:hover {
+  background-color: white !important;
+  color: #121030 !important;
+  border-radius: 4px !important;
+  
+
+}
+
+/* Selected item styles  */
+.custom-sidebar-menu .ant-menu-item-selected,
+.custom-sidebar-menu .ant-menu-sub .ant-menu-item-selected,
+.custom-sidebar-menu .ant-menu-submenu-selected > .ant-menu-submenu-title {
+  background-color: white!important;
+  color: #121030 !important;
+  border-radius: 4px !important;
+  
+}
+
+/* Increase height of all menu items */
+.custom-sidebar-menu .ant-menu-item,
+.custom-sidebar-menu .ant-menu-submenu-title {
+  height: 48px !important;  
+ 
+  display: flex;
+  align-items: center;
+}
+
+/* Remove left indentation from all menu items */
+.custom-sidebar-menu .ant-menu-item,
+.custom-sidebar-menu .ant-menu-submenu-title,
+.custom-sidebar-menu .ant-menu-sub .ant-menu-item {
+  margin-left: 0 !important;
+}
+
+/* Reduce vertical gap between submenu items */
+.custom-sidebar-menu .ant-menu-sub .ant-menu-item {
+  margin-bottom: 4px !important;  /* Reduce this to decrease spacing */
+  
+}
+
+/* Remove extra space above submenu */
+.custom-sidebar-menu .ant-menu-sub {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+
+
+*::-webkit-scrollbar {
+    display: none;
+  }
+ 

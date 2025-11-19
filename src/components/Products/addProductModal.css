@@ -1,0 +1,38 @@
+/* Checkbox wrapper (label text) */
+.custom-checkbox .ant-checkbox-wrapper {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #333;
+}
+
+/* Checkbox border and checked style */
+.custom-checkbox .ant-checkbox-inner {
+  border-color: #E4AF00 !important;
+  border-radius: 4px;
+}
+
+/* When checked, background and border color */
+.custom-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #E4AF00 !important;
+  border-color: #E4AF00 !important;
+}
+
+/* Optional: Change the check icon color */
+.custom-checkbox .ant-checkbox-inner::after {
+  border-color: white;
+}
+
+.color-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter', sans-serif;
+}
+
+.color-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  
+}
+
