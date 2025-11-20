@@ -8,6 +8,9 @@ import { IoSettingsOutline } from "react-icons/io5";
 import {AppstoreOutlined} from '@ant-design/icons';
 import { Button, Menu } from 'antd';
 import logo from '/images/logo.svg';
+import { CiDollar } from "react-icons/ci";
+import { MdUnsubscribe } from "react-icons/md";
+import { GiMeditation } from "react-icons/gi";
 import './sidebar.css'
 
 
@@ -15,9 +18,11 @@ import './sidebar.css'
 const items = [
     { key: '/', icon: <AppstoreOutlined style={{ fontSize: '24px' }} />, label: <Link to="/">Dashboard</Link> },
     { key: '/user-management', icon: <HiOutlineUserCircle size={24} />, label: <Link to="/user-management">User Management</Link> },
-    // { key: '/order-management', icon: <MdListAlt size={24} />, label: <Link to="/order-management">Order Management</Link> },
-    // { key: '/category', icon: <MdOutlineCategory size={24} />, label: <Link to="/category">Categories</Link> },
-    // { key: '/products', icon: <FiBox size={24} />, label: <Link to="/products">Products</Link> },
+    { key: '/subscriptions', icon: <MdUnsubscribe  size={24} />, label: <Link to="/subscriptions">Subscriptions</Link> },
+    { key: '/add-meditation', icon: <GiMeditation  size={24} />, label: <Link to="/add-meditation">Add Meditation</Link> },
+
+    { key: '/transaction', icon: <CiDollar  size={24} />, label: <Link to="/transaction">Transaction</Link> },
+    
     {
         key: 'sub1',
         label: 'Contact & FAQs',

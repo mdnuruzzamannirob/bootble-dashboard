@@ -4,7 +4,7 @@ import Layout from "../components/Layout/Layout";
 import Dashboard from "../components/Dashboard/Dashboard";
 import HelpCenterPage from "../components/Dashboard/HelpCenterPage/HelpCenterPage";
 import User from "../components/User/User";
-import Orders from "../components/Orders/Orders";
+
 import Category from "../components/Category/Category";
 import Products from "../components/Products/Products";
 import Notification from "../components/Notification/Notification";
@@ -19,6 +19,9 @@ import ForgetPassword from "../components/Logout/ForgetPassword";
 import CheckYourEmail from "../components/Logout/CheckYourEmail";
 import SetPassword from "../components/Logout/SetPassword";
 import Support from "../components/Dashboard/Support";
+import Transaction from "../components/Transaction/Transaction";
+import Subscriptions from "../components/Subscriptions/Subscriptions";
+import Meditation from "../components/Meditation/Meditation";
 
 
 
@@ -40,18 +43,20 @@ const router = createBrowserRouter([
         element: <User></User>,
 
       },
-      // {
-      //   path: "/order-management",
-      //   element: <Orders></Orders>,
-      // },
-      // {
-      //   path: "/category",
-      //   element: <Category></Category>,
-      // },
-      // {
-      //   path: "/products",
-      //   element: <Products></Products>,
-      // },
+      {
+        path: "/subscriptions",
+        element: <Subscriptions />,
+      },
+      {
+        path: "/add-meditation",
+        element: <Meditation />,
+      },
+      {
+        path: "/transaction",
+        element: <Transaction />,
+      },
+      
+      
       {
         path: "/notifications",
         element: <Notification></Notification>,

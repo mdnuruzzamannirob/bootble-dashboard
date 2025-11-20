@@ -1,0 +1,40 @@
+/* Ant Design Input - Override blue border with black on focus and hover */
+
+/* Input Field Hover State */
+.meditation-form .ant-input:hover {
+  border-color: #000000 !important;
+}
+
+/* Input Field Focus State */
+.meditation-form .ant-input:focus,
+.meditation-form .ant-input-focused {
+  border-color: #000000 !important;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Select Field Hover State */
+.meditation-form .ant-select:hover .ant-select-selector {
+  border-color: #000000 !important;
+}
+
+/* Select Field Focus/Active State */
+.meditation-form .ant-select-focused .ant-select-selector,
+.meditation-form .ant-select-open .ant-select-selector {
+  border-color: #000000 !important;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Select Dropdown Trigger Hover */
+.meditation-form .ant-select-arrow {
+  color: #000000;
+}
+
+/* Override default blue outline for better clarity */
+.meditation-form .ant-input::placeholder {
+  color: #999999;
+}
+
+/* Ensure consistent styling across all input states */
+.meditation-form .ant-form-item-has-error .ant-input:focus {
+  border-color: #ff4d4f !important;
+}

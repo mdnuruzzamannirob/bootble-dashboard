@@ -18,9 +18,7 @@ const data = [
     key: '1',
     name: 'Annette Black',
     date: '12/03/25',
-    total: '$58',
-    address: 'West Greenwich, RI7',
-    payment: 'Paid',
+    subscription: 'Silver',
     status: 'Completed',
     avatar: '/images/users/user1.png',
   },
@@ -28,9 +26,8 @@ const data = [
     key: '2',
     name: 'Jerome Bell',
     date: '12/03/25',
-    total: '$77',
-    address: 'Jericho, NY 11753',
-    payment: 'Pending',
+    subscription: 'Gold',
+    
     status: 'Canceled',
     avatar: '/images/users/user2.png',
   },
@@ -38,9 +35,8 @@ const data = [
     key: '3',
     name: 'Ronald Richards',
     date: '12/03/25',
-    total: '$28',
-    address: 'Aurora, OR 97002',
-    payment: 'Paid',
+    subscription: 'Silver',
+ 
     status: 'Completed',
     avatar: '/images/users/user3.png',
   },
@@ -48,19 +44,17 @@ const data = [
     key: '4',
     name: 'Dianne Russell',
     date: '12/03/25',
-    total: '$94',
-    address: 'Midland Park, NJ 072',
-    payment: 'Paid',
-    status: 'Shipped',
+    subscription: 'Gold',
+    
+    status: 'Expired',
     avatar: '/images/users/user4.png',
   },
   {
     key: '5',
     name: 'Albert Flores',
     date: '12/03/25',
-    total: '$55',
-    address: 'Saint Cloud, FL 349',
-    payment: 'Pending',
+    subscription: 'Diamond',
+   
     status: 'Completed',
     avatar: '/images/users/user5.png',
   },
@@ -68,37 +62,34 @@ const data = [
     key: '6',
     name: 'Eleanor Pena',
     date: '12/03/25',
-    total: '$85',
-    address: 'Vineland, NJ 08360',
-    payment: 'Paid',
-    status: 'In Progress',
+    subscription: 'Gold',
+    status: 'Pending',
     avatar: '/images/users/user6.png',
   },
   {
     key: '7',
     name: 'Floyd Miles',
     date: '12/03/25',
-    total: '$68',
-    address: 'Castleton On Hudson',
-    payment: 'Pending',
-    status: 'Canceled',
+    subscription: 'Diamond',
+   
+    status: 'Pending',
     avatar: '/images/users/user7.png',
   },
   {
     key: '8',
     name: 'Cody Fisher',
     date: '12/03/25',
-    total: '$30',
+    subscription: 'Diamond',
     address: 'Rockford, IL 61109',
     payment: 'Paid',
-    status: 'Shipped',
+    status: 'Expired',
     avatar: '/images/users/user8.png',
   },
   {
     key: '9',
     name: 'Ralph Edwards',
     date: '12/03/25',
-    total: '$45',
+    subscription: 'Diamond',
     address: 'Anna Maria, FL 346',
     payment: 'Paid',
     status: 'Completed',
@@ -108,27 +99,23 @@ const data = [
     key: '10',
     name: 'Devon Lane',
     date: '12/03/25',
-    total: '$24',
-    address: 'Mountain View, C 3',
-    payment: 'Pending',
-    status: 'Shipped',
+    subscription: 'Diamond',
+    status: 'Expired',
     avatar: '/images/users/user10.png',
   },
 ];
 
-const getTagColor = (status, type) => {
-  if (type === 'payment') {
-    return status === 'Paid' ? 'green' : 'orange';
-  }
-  if (type === 'order') {
+const getTagColor = (status) => {
+  
+   {
     switch (status) {
       case 'Completed':
         return 'green';
       case 'Canceled':
         return 'red';
-      case 'Shipped':
+      case 'Expired':
         return 'gold';
-      case 'In Progress':
+      case 'Pending':
         return 'blue';
       default:
         return 'default';
@@ -137,7 +124,7 @@ const getTagColor = (status, type) => {
 };
 
 
-export default function Orders() {
+export default function Transaction() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -171,13 +158,13 @@ export default function Orders() {
 
   const columns = [
     {
-      title: 'Order No.',
+      title: 'Tran Id.',
       dataIndex: 'key',
-      key: 'orderNo',
+      key: 'transaction',
       render: () => '#1233',
     },
     {
-      title: 'Customer Name',
+      title: 'User ',
       dataIndex: 'name',
       key: 'name',
       render: (text, record) => (
@@ -187,36 +174,11 @@ export default function Orders() {
         </Space>
       ),
     },
-    { title: 'Date', dataIndex: 'date', key: 'date' },
-    { title: 'Total', dataIndex: 'total', key: 'total' },
-    { title: 'Shipping Address', dataIndex: 'address', key: 'address' },
+    { title: 'Date', dataIndex: 'date', key: 'date',align: 'center' },
+    { title: 'Subscription', dataIndex: 'subscription', key: 'subscription' , align: 'center'},
+    
     {
       title: 'Payment Status',
-      dataIndex: 'payment',
-      key: 'payment',
-      align: 'center',
-      render: (status) => (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Tag
-            color={getTagColor(status, 'payment')}
-            style={{
-              borderRadius: 226,
-              width: 125,
-              height: 36,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              fontFamily: 'Inter',
-            }}
-          >
-            {status}
-          </Tag>
-        </div>
-
-      ),
-    },
-    {
-      title: 'Order Status',
       dataIndex: 'status',
       key: 'status',
       align: 'center',
@@ -240,21 +202,7 @@ export default function Orders() {
 
       ),
     },
-    {
-      title: 'Action',
-      key: 'action',
-      align: 'center',
-      render: (_, record) => (
-        <Space>
-          <a type="text" onClick={() => handleView(record)}>
-            <img src={ViewSign} alt="view" />
-          </a>
-          <a type="text" onClick={() => handleEdit(record)}>
-            <img src={EditSign} alt="edit" />
-          </a>
-        </Space>
-      ),
-    },
+    
   ];
 
 
@@ -265,8 +213,8 @@ export default function Orders() {
     
         <div className="bg-white p-6 rounded-[8px] shadow-lg">
           <div className="mb-6 flex justify-between items-center">
-            <BackButton text="Order Management"></BackButton>
-            <SearchButton></SearchButton>
+            <BackButton text="Transactions"></BackButton>
+            {/* <SearchButton></SearchButton> */}
             
           </div>
 
@@ -280,16 +228,7 @@ export default function Orders() {
         </div>
      
 
-      {/* View Modal */}
-      <DetailsModal open={isModalVisible} onCancel={handleCancel} order={selectedOrder} />
-
-      {/* Edit modal */}
-      <EditModal
-        open={isEditModalVisible}
-        onCancel={handleEditCancel}
-        initialStatus={selectedEditOrder?.status}
-        initialPayment={selectedEditOrder?.payment}
-      />
+      
 
     </>
   )
