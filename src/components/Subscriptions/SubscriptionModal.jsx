@@ -95,11 +95,11 @@ export default function SubscriptionModal({
             },
             {
               pattern: /^\$?\d+(\.\d{2})?$/,
-              message: "Please enter a valid amount (e.g., $99.99 or 99.99)",
+              message: "Please enter a valid amount (e.g., £99.99)",
             },
           ]}
         >
-          <Input placeholder="e.g., $99.99 or 99.99" />
+          <Input placeholder="e.g., £99.99" />
         </Form.Item>
       </Form>
     </Modal>

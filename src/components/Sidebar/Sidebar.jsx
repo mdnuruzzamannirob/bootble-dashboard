@@ -11,6 +11,7 @@ import logo from '/images/logo.svg';
 import { CiDollar } from "react-icons/ci";
 import { MdUnsubscribe } from "react-icons/md";
 import { GiMeditation } from "react-icons/gi";
+import { AiOutlineEuro } from "react-icons/ai";
 import './sidebar.css'
 
 
@@ -21,7 +22,7 @@ const items = [
     { key: '/subscriptions', icon: <MdUnsubscribe  size={24} />, label: <Link to="/subscriptions">Subscriptions</Link> },
     { key: '/add-meditation', icon: <GiMeditation  size={24} />, label: <Link to="/add-meditation">Add Meditation</Link> },
 
-    { key: '/transaction', icon: <CiDollar  size={24} />, label: <Link to="/transaction">Transaction</Link> },
+    { key: '/transaction', icon: <AiOutlineEuro  size={24} />, label: <Link to="/transaction">Transaction</Link> },
     
     {
         key: 'sub1',
