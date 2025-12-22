@@ -1,106 +1,105 @@
-import React from "react";
-import { createBrowserRouter } from "react-router-dom";
-import Layout from "../components/Layout/Layout";
-import Dashboard from "../components/Dashboard/Dashboard";
-import HelpCenterPage from "../components/Dashboard/HelpCenterPage/HelpCenterPage";
-import User from "../components/User/User";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
-import Category from "../components/Category/Category";
-import Products from "../components/Products/Products";
-import Notification from "../components/Notification/Notification";
-import HelpSupport from "../components/HelpFAQs/HelpSupport";
-import FAQs from "../components/HelpFAQs/FAQs";
-import AboutUs from "../components/Settings/AboutUs";
-import TermsConditions from "../components/Settings/TermsConditions";
-import PrivacyPolicy from "../components/Settings/PrivacyPolicy";
-import Profile from "../components/Profile/Profile";
+// Layout & Guards
+import Layout from "../components/Layout/Layout";
+import ProtectedRoute from "./ProtectedRoute";
+import PublicRoute from "./PublicRoute";
+
+// Auth Pages
 import Login from "../components/Logout/Login";
 import ForgotPassword from "../components/Logout/ForgotPassword";
 import CheckYourEmail from "../components/Logout/CheckYourEmail";
 import SetPassword from "../components/Logout/SetPassword";
-import Support from "../components/Dashboard/Support";
-import Transaction from "../components/Transaction/Transaction";
+
+// Main Dashboard Pages
+import Dashboard from "../components/Dashboard/Dashboard";
+import User from "../components/User/User";
+import Category from "../components/Category/Category";
+import Products from "../components/Products/Products";
 import Subscriptions from "../components/Subscriptions/Subscriptions";
 import Meditation from "../components/Meditation/Meditation";
+import Transaction from "../components/Transaction/Transaction";
+import Notification from "../components/Notification/Notification";
+
+// Help & Support Pages
+import HelpCenterPage from "../components/Dashboard/HelpCenterPage/HelpCenterPage";
+import HelpSupport from "../components/HelpFAQs/HelpSupport";
+import Support from "../components/Dashboard/Support";
+import FAQs from "../components/HelpFAQs/FAQs";
+
+// Settings & Profile
+import Profile from "../components/Profile/Profile";
+import AboutUs from "../components/Settings/AboutUs";
+import TermsConditions from "../components/Settings/TermsConditions";
+import PrivacyPolicy from "../components/Settings/PrivacyPolicy";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout></Layout>,
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
-      {
-        path: "/",
-        element: <Dashboard></Dashboard>,
-      },
-      {
-        path: "/help-center",
-        element: <HelpCenterPage></HelpCenterPage>,
-      },
-      {
-        path: "/user-management",
-        element: <User></User>,
-      },
-      {
-        path: "/subscriptions",
-        element: <Subscriptions />,
-      },
-      {
-        path: "/add-meditation",
-        element: <Meditation />,
-      },
-      {
-        path: "/transaction",
-        element: <Transaction />,
-      },
+      { path: "/", element: <Dashboard /> },
+      { path: "/user-management", element: <User /> },
+      { path: "/category", element: <Category /> },
+      { path: "/products", element: <Products /> },
+      { path: "/subscriptions", element: <Subscriptions /> },
+      { path: "/add-meditation", element: <Meditation /> },
+      { path: "/transaction", element: <Transaction /> },
+      { path: "/notifications", element: <Notification /> },
 
-      {
-        path: "/notifications",
-        element: <Notification></Notification>,
-      },
-      {
-        path: "/contact-support",
-        element: <Support />,
-      },
+      // Help & Support
+      { path: "/help-center", element: <HelpCenterPage /> },
+      { path: "/help-support", element: <HelpSupport /> },
+      { path: "/contact-support", element: <Support /> },
+      { path: "/FAQs", element: <FAQs /> },
 
-      {
-        path: "/FAQs",
-        element: <FAQs></FAQs>,
-      },
-      // {
-      //   path: "/about",
-      //   element: <AboutUs></AboutUs>,
-      // },
-      {
-        path: "/terms-conditions",
-        element: <TermsConditions></TermsConditions>,
-      },
+      // Profile & Settings
+      { path: "/profile", element: <Profile /> },
+      { path: "/about-us", element: <AboutUs /> },
+      { path: "/terms-conditions", element: <TermsConditions /> },
+      { path: "/privacy-policy", element: <PrivacyPolicy /> },
 
-      {
-        path: "/privacy-policy",
-        element: <PrivacyPolicy></PrivacyPolicy>,
-      },
-      {
-        path: "/profile",
-        element: <Profile></Profile>,
-      },
+      // 404 Redirect
+      { path: "*", element: <Navigate to="/" replace /> },
     ],
   },
 
+  // --- Auth / Public Routes ---
   {
     path: "/login",
-    element: <Login></Login>,
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    ),
   },
   {
     path: "/forgot-password",
-    element: <ForgotPassword></ForgotPassword>,
+    element: (
+      <PublicRoute>
+        <ForgotPassword />
+      </PublicRoute>
+    ),
   },
   {
     path: "/check-email",
-    element: <CheckYourEmail></CheckYourEmail>,
+    element: (
+      <PublicRoute>
+        <CheckYourEmail />
+      </PublicRoute>
+    ),
   },
   {
     path: "/set-password",
-    element: <SetPassword></SetPassword>,
+    element: (
+      <PublicRoute>
+        <SetPassword />
+      </PublicRoute>
+    ),
   },
 ]);
 

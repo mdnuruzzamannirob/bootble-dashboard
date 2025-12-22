@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Form, Checkbox, Typography } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import LoginPageButton from "../SharedComponents/LoginPageButton";
@@ -22,6 +22,9 @@ export default function Login() {
   });
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -37,7 +40,7 @@ export default function Login() {
         path: "/",
       });
       toast.success("Login successful!");
-      navigate("/dashboard");
+      navigate(from || "/");
     } catch (error) {
       toast.error(
         error?.message ||
