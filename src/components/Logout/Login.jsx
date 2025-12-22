@@ -1,68 +1,48 @@
+"use client";
+
 import { useState } from "react";
-import { Form, Checkbox, Typography, Card } from "antd";
+import { Form, Checkbox, Typography } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 import LoginPageButton from "../SharedComponents/LoginPageButton";
 import EmailInput from "../SharedComponents/EmailInput";
 import PasswordInput from "../SharedComponents/PasswordInput";
-import { Link } from "react-router-dom";
 
-import "./Login.css";
+import { useLoginMutation } from "../../store/features/auth/authApi";
 
 const { Title, Text } = Typography;
+
 export default function Login() {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    rememberMe: false,
+  });
+  const [login, { isLoading }] = useLoginMutation();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const onFinish = async () => {
+    try {
+      const res = await login(formData).unwrap();
+      toast.success("Login successful!");
+      navigate("/dashboard");
+    } catch (error) {
+      toast.error(error?.data?.message || "Login failed. Please try again.");
+    }
   };
+
   return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#EBEBFF",
-      }}
-    >
-      <Card
-        style={{
-          width: 630,
-          height: 735,
-          padding: "30px 20px",
-          borderRadius: 24,
-          boxShadow: "0 0 10px rgba(0,0,0,0.05)",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "stretch",
-        }}
-      >
-        <Title
-          level={3}
-          style={{
-            textAlign: "center",
-            fontFamily: "Inter",
-            fontSize: "32",
-            fontWeight: "500",
-          }}
-        >
+    <div className="h-screen flex justify-center items-center bg-[#EBEBFF] px-4">
+      <div className="bg-white w-full max-w-md p-10 rounded-2xl shadow-md flex flex-col">
+        <Title level={3} className="text-center text-2xl font-semibold mb-2">
           Login to Account
         </Title>
-        <Text
-          type="secondary"
-          style={{
-            display: "block",
-            textAlign: "center",
-            marginBottom: 32,
-            color: "#333333",
-            fontFamily: "Inter",
-            fontSize: "18",
-          }}
-        >
+        <Text type="secondary" className="text-center text-gray-600 mb-8">
           Please enter your email and password to continue
         </Text>
 
@@ -71,48 +51,63 @@ export default function Login() {
           layout="vertical"
           initialValues={{ remember: true }}
           onFinish={onFinish}
+          className="space-y-4"
         >
-          <EmailInput
-            label="Email address"
+          {/* Email */}
+          <Form.Item
             name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-
-          <PasswordInput
-            label="Password"
-            name="password"
-            placeholder="**********"
-            value={formData.password}
-            onChange={handleChange}
-          />
-
-          <Form.Item style={{ marginBottom: 10 }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                fontFamily: "Inter",
-                marginBottom: 32,
-              }}
-            >
-              <Checkbox defaultChecked className="custom-yellow-checkbox">
-                Remember Password
-              </Checkbox>
-              <Link to="/forget-password" className="forget-password-link">
-                Forget Password?
-              </Link>
-            </div>
+            rules={[
+              { required: true, message: "Please enter your email" },
+              { type: "email", message: "Please enter a valid email" },
+            ]}
+          >
+            <EmailInput
+              label="Email address"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
           </Form.Item>
 
-          <Form.Item style={{ marginTop: 24 }}>
-            <Link to="/">
-              <LoginPageButton text="Sign in"></LoginPageButton>
+          {/* Password */}
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: "Please enter your password" }]}
+          >
+            <PasswordInput
+              label="Password"
+              name="password"
+              placeholder="**********"
+              value={formData.password}
+              onChange={handleChange}
+            />
+          </Form.Item>
+
+          {/* Remember + Forget Password */}
+          <div className="flex justify-between items-center">
+            <Checkbox
+              checked={formData.rememberMe}
+              onChange={(e) =>
+                setFormData({ ...formData, rememberMe: e.target.checked })
+              }
+              className="text-yellow-500"
+            >
+              Remember Password
+            </Checkbox>
+            <Link
+              to="/forget-password"
+              className="text-blue-500 hover:underline"
+            >
+              Forget Password?
             </Link>
+          </div>
+
+          {/* Submit Button */}
+          <Form.Item>
+            <LoginPageButton text={isLoading ? "Signing in..." : "Sign in"} />
           </Form.Item>
         </Form>
-      </Card>
+      </div>
     </div>
   );
 }

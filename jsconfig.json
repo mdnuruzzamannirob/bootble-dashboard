@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ESNext", // modern JS features
+    "module": "ESNext", // ESM modules
+    "moduleResolution": "Node", // resolve node modules
+    "baseUrl": ".", // project root
+    "paths": {
+      "@/*": ["src/*"] // alias for src folder
+    },
+    "jsx": "react-jsx", // React 17+ new JSX transform
+    "allowSyntheticDefaultImports": true, // allow default imports from CJS
+    "esModuleInterop": true // compatibility for interop modules
+  },
+  "include": ["src"], // include all source files
+  "exclude": ["node_modules", "dist"] // exclude build and node_modules
+}
