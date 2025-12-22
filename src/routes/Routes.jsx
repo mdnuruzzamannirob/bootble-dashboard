@@ -23,16 +23,14 @@ import Transaction from "../components/Transaction/Transaction";
 import Subscriptions from "../components/Subscriptions/Subscriptions";
 import Meditation from "../components/Meditation/Meditation";
 
-
-
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout></Layout>,
     children: [
       {
-          path: "/",
-          element: <Dashboard></Dashboard>,
+        path: "/",
+        element: <Dashboard></Dashboard>,
       },
       {
         path: "/help-center",
@@ -41,7 +39,6 @@ const router = createBrowserRouter([
       {
         path: "/user-management",
         element: <User></User>,
-
       },
       {
         path: "/subscriptions",
@@ -55,16 +52,14 @@ const router = createBrowserRouter([
         path: "/transaction",
         element: <Transaction />,
       },
-      
-      
+
       {
         path: "/notifications",
         element: <Notification></Notification>,
       },
       {
         path: "/contact-support",
-        element: <Support/>,
-
+        element: <Support />,
       },
 
       {
@@ -76,7 +71,7 @@ const router = createBrowserRouter([
       //   element: <AboutUs></AboutUs>,
       // },
       {
-        path: "/terms-contiditions",
+        path: "/terms-conditions",
         element: <TermsConditions></TermsConditions>,
       },
 
@@ -89,8 +84,6 @@ const router = createBrowserRouter([
         element: <Profile></Profile>,
       },
     ],
-
-    
   },
 
   {
