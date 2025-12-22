@@ -1,16 +1,15 @@
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { HiOutlineUserCircle } from "react-icons/hi2";
-import { MdOutlineCategory } from "react-icons/md";
-import { FiBox, FiLogOut } from "react-icons/fi";
-import { MdOutlineStore, MdListAlt } from "react-icons/md";
+import { MdOutlineStore, MdUnsubscribe } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
-import { AppstoreOutlined } from "@ant-design/icons";
-import { Button, Menu } from "antd";
-import logo from "/images/logo.svg";
-import { CiDollar } from "react-icons/ci";
-import { MdUnsubscribe } from "react-icons/md";
+import { AppstoreOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { Button, Menu, Modal } from "antd";
+import { FiLogOut } from "react-icons/fi";
 import { GiMeditation } from "react-icons/gi";
 import { AiOutlineEuro } from "react-icons/ai";
+import logo from "/images/logo.svg";
+import { useAuth } from "@/hooks/useAuth";
 import "./sidebar.css";
 
 const items = [
@@ -34,13 +33,11 @@ const items = [
     icon: <GiMeditation size={24} />,
     label: <Link to="/add-meditation">Add Meditation</Link>,
   },
-
   {
     key: "/transaction",
     icon: <AiOutlineEuro size={24} />,
     label: <Link to="/transaction">Transaction</Link>,
   },
-
   {
     key: "sub1",
     label: "Contact & FAQs",
@@ -59,7 +56,6 @@ const items = [
     icon: <IoSettingsOutline size={24} />,
     children: [
       { key: "/profile", label: <Link to="/profile">Profile</Link> },
-      // { key: '/about', label: <Link to="/about">About Us</Link> },
       {
         key: "/terms-conditions",
         label: <Link to="/terms-conditions">Terms & Conditions</Link>,
@@ -73,20 +69,29 @@ const items = [
 ];
 
 export default function Sidebar() {
+  const { logout } = useAuth();
   const location = useLocation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showLogoutModal = () => setIsModalOpen(true);
+  const handleCancel = () => setIsModalOpen(false);
+
+  const handleLogout = () => {
+    logout();
+    setIsModalOpen(false);
+  };
 
   return (
-    <div className=" bg-[#EBEBFF] min-h-screen flex flex-col justify-between ">
+    <div className="bg-[#EBEBFF] min-h-screen flex flex-col justify-between border-r border-gray-200">
       {/* Top Section */}
       <div>
-        {/* Logo */}
-        <div>
-          <img className="  pt-[16px] pb-[24px]" src={logo} alt="logo" />
+        <div className="flex justify-center p-6">
+          <img className="w-40" src={logo} alt="logo" />
         </div>
 
         {/* Menu */}
         <Menu
-          className="custom-sidebar-menu inter-medium"
+          className="custom-sidebar-menu inter-medium bg-transparent border-none"
           selectedKeys={[location.pathname]}
           defaultOpenKeys={["sub1", "sub2"]}
           mode="inline"
@@ -95,18 +100,57 @@ export default function Sidebar() {
         />
       </div>
 
-      {/* Bottom Section */}
-      <div className="mr-2 ">
-        <Link to="/login">
-          <Button
-            className="logout-button inter-medium "
-            type="text"
-            icon={<FiLogOut style={{ fontSize: "24px" }} />}
-          >
-            Log out
-          </Button>
-        </Link>
+      {/* Logout Button Section */}
+      <div className="px-4 pb-8">
+        <Button
+          onClick={showLogoutModal}
+          className="logout-button inter-medium w-full flex items-center justify-start h-12 rounded-xl border-none text-gray-600 hover:!bg-red-50 hover:!text-red-500 transition-all duration-300"
+          type="text"
+          icon={<FiLogOut style={{ fontSize: "22px" }} />}
+        >
+          <span className="ml-2 font-semibold">Log out</span>
+        </Button>
       </div>
+
+      {/* Logout Confirmation Modal */}
+      <Modal
+        open={isModalOpen}
+        onOk={handleLogout}
+        onCancel={handleCancel}
+        footer={null}
+        centered
+        maskClosable={true}
+        width={400}
+        className="logout-modal"
+      >
+        <div className="flex flex-col items-center text-center p-4">
+          <div className="bg-red-50 p-4 rounded-full mb-4">
+            <ExclamationCircleOutlined className="text-red-500 text-4xl" />
+          </div>
+
+          <h2 className="text-xl font-bold text-gray-800 mb-2">Logout</h2>
+          <p className="text-gray-500 mb-8">
+            Are you sure you want to log out from the system?
+          </p>
+
+          <div className="flex gap-4 w-full">
+            <Button
+              onClick={handleCancel}
+              className="flex-1 h-11 rounded-lg border-gray-300 font-medium"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleLogout}
+              type="primary"
+              danger
+              className="flex-1 h-11 rounded-lg bg-red-500 hover:bg-red-600 font-medium"
+            >
+              Logout
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

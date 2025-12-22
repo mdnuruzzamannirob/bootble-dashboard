@@ -10,7 +10,8 @@ import EmailInput from "../SharedComponents/EmailInput";
 import PasswordInput from "../SharedComponents/PasswordInput";
 
 import { useLoginMutation } from "../../store/features/auth/authApi";
-import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@/store/features/auth/authSlice";
 
 const { Title, Text } = Typography;
 
@@ -22,6 +23,7 @@ export default function Login() {
   });
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
 
   const from = location.state?.from;
@@ -33,20 +35,21 @@ export default function Login() {
   const onFinish = async () => {
     try {
       const res = await login(formData).unwrap();
-      Cookies.set("token", res.token, {
-        expires: formData.rememberMe ? 7 : undefined,
-        secure: import.meta.env.NODE_ENV === "production",
-        sameSite: "None",
-        path: "/",
-      });
+      dispatch(
+        setCredentials({
+          token: res.token,
+          user: res.user,
+          isRemember: formData.rememberMe,
+        })
+      );
       toast.success("Login successful!");
       navigate(from || "/");
     } catch (error) {
-      toast.error(
+      const errorMsg =
         error?.message ||
-          error?.data?.message ||
-          "Login failed. Please try again."
-      );
+        error?.data?.message ||
+        "Login failed. Please try again.";
+      toast.error(errorMsg);
     }
   };
 
