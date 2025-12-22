@@ -15,7 +15,7 @@ import TermsConditions from "../components/Settings/TermsConditions";
 import PrivacyPolicy from "../components/Settings/PrivacyPolicy";
 import Profile from "../components/Profile/Profile";
 import Login from "../components/Logout/Login";
-import ForgetPassword from "../components/Logout/ForgetPassword";
+import ForgotPassword from "../components/Logout/ForgotPassword";
 import CheckYourEmail from "../components/Logout/CheckYourEmail";
 import SetPassword from "../components/Logout/SetPassword";
 import Support from "../components/Dashboard/Support";
@@ -91,8 +91,8 @@ const router = createBrowserRouter([
     element: <Login></Login>,
   },
   {
-    path: "/forget-password",
-    element: <ForgetPassword></ForgetPassword>,
+    path: "/forgot-password",
+    element: <ForgotPassword></ForgotPassword>,
   },
   {
     path: "/check-email",

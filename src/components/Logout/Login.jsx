@@ -10,6 +10,7 @@ import EmailInput from "../SharedComponents/EmailInput";
 import PasswordInput from "../SharedComponents/PasswordInput";
 
 import { useLoginMutation } from "../../store/features/auth/authApi";
+import Cookies from "js-cookie";
 
 const { Title, Text } = Typography;
 
@@ -29,10 +30,20 @@ export default function Login() {
   const onFinish = async () => {
     try {
       const res = await login(formData).unwrap();
+      Cookies.set("token", res.token, {
+        expires: formData.rememberMe ? 7 : undefined,
+        secure: import.meta.env.NODE_ENV === "production",
+        sameSite: "None",
+        path: "/",
+      });
       toast.success("Login successful!");
       navigate("/dashboard");
     } catch (error) {
-      toast.error(error?.data?.message || "Login failed. Please try again.");
+      toast.error(
+        error?.message ||
+          error?.data?.message ||
+          "Login failed. Please try again."
+      );
     }
   };
 
@@ -95,16 +106,16 @@ export default function Login() {
               Remember Password
             </Checkbox>
             <Link
-              to="/forget-password"
+              to="/forgot-password"
               className="text-blue-500 hover:underline"
             >
-              Forget Password?
+              Forgot Password?
             </Link>
           </div>
 
           {/* Submit Button */}
           <Form.Item>
-            <LoginPageButton text={isLoading ? "Signing in..." : "Sign in"} />
+            <LoginPageButton loading={isLoading} text="Sign in" />
           </Form.Item>
         </Form>
       </div>

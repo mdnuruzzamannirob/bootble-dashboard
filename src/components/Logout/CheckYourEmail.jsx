@@ -1,63 +1,63 @@
-import React from 'react';
-import { Form, Input, Checkbox, Typography, Card, Button } from 'antd';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import LoginPageButton from '../SharedComponents/LoginPageButton';
-import { Link } from 'react-router-dom';
-
-import './Login.css';
-import Box from '../SharedComponents/Box';
+import { useState } from "react";
+import { Typography, Card, Input } from "antd";
+import { useLocation, useNavigate } from "react-router-dom";
+import LoginPageButton from "../SharedComponents/LoginPageButton";
+import { toast } from "react-toastify";
+import { useVerifyOtpMutation } from "@/store/features/auth/authApi";
 
 const { Title, Text } = Typography;
+
 export default function CheckYourEmail() {
-    
-    const values = ['2', '8', '4', ' ', ' '];
-    return (
-        <div style={{
-            height: '100vh',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#EBEBFF',
-        }}>
-            <Card
-                style={{
-                    width: 630,
-                    height: 735,
-                    padding: '30px 20px',
-                    borderRadius: 24,
-                    boxShadow: '0 0 10px rgba(0,0,0,0.05)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'stretch',
+  const [otp, setOtp] = useState("");
+  const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const email = location.state?.email;
 
-                }}
-            >
-                <Title level={3} style={{ textAlign: 'center', fontFamily: 'Inter', fontSize: '32', fontWeight: '500', marginBottom: 24, }}>Check your email</Title>
-                <Text type="secondary" style={{ display: 'block', textAlign: 'center', marginBottom: 60, color: '#333333', fontFamily: 'Inter', fontSize: '18' }}>
-                    We sent a code to your email address @. Please check your email for the 5 digit code.
-                </Text>
+  const handleVerify = async () => {
+    if (otp.length < 6) {
+      return toast.warning("Please enter 6 digit OTP");
+    }
+    try {
+      await verifyOtp({ email, otp, purpose: "forgot-password" }).unwrap();
+      toast.success("OTP Verified!");
+      navigate("/set-password", { state: { email, otp } });
+    } catch (error) {
+      toast.error(error?.message || error?.data?.message || "Invalid OTP");
+    }
+  };
 
-                {/* codes */}
+  return (
+    <div className="h-screen flex justify-center items-center bg-[#EBEBFF] px-4">
+      <Card className="w-full max-w-[630px] p-8 rounded-[24px] shadow-sm">
+        <Title level={3} className="text-center !font-medium !text-[32px] mb-6">
+          Check your email
+        </Title>
+        <Text className="block text-center mb-10 text-[#333333] text-[18px]">
+          We sent a code to your email{" "}
+          <span className="font-bold">{email}</span>. Please check for the 5
+          digit code.
+        </Text>
 
-                <div className='flex gap-2 mb-[64px] justify-center'>
-                    {values.map((val, index) => (
-                        <Box key={index} text={val}></Box>
-                    ))}
-                </div>
-
-
-                    {/* button */}
-                    <Link to="/set-password" ><LoginPageButton text="Verify"></LoginPageButton></Link>
-
-                    {/* Page end */}
-                    <div className='font-[Inter] flex justify-center mt-[84px]'>
-                             <p className=''>You have not received the email? <a href=""><span className='text-[#121030] underline'>Resend</span></a></p>
-                    </div>
-
-
-               
-            </Card>
+        <div className="flex justify-center mb-10">
+          <Input.OTP length={6} onChange={(v) => setOtp(v)} size="large" />
         </div>
-    )
+
+        <LoginPageButton
+          loading={isLoading}
+          onClick={handleVerify}
+          text="Verify"
+        />
+
+        <div className="flex justify-center mt-20 font-inter">
+          <p>
+            You have not received the email?
+            <button className="text-[#121030] underline ml-1 font-semibold">
+              Resend
+            </button>
+          </p>
+        </div>
+      </Card>
+    </div>
+  );
 }
