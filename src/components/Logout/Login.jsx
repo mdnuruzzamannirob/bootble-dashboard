@@ -35,6 +35,12 @@ export default function Login() {
   const onFinish = async () => {
     try {
       const res = await login(formData).unwrap();
+
+      if (res?.user?.role !== "admin") {
+        toast.error("Username or password is incorrect");
+        return;
+      }
+
       dispatch(
         setCredentials({
           token: res.token,
@@ -42,12 +48,13 @@ export default function Login() {
           isRemember: formData.rememberMe,
         })
       );
+
       toast.success("Login successful!");
       navigate(from || "/");
     } catch (error) {
       const errorMsg =
-        error?.message ||
         error?.data?.message ||
+        error?.message ||
         "Login failed. Please try again.";
       toast.error(errorMsg);
     }
@@ -121,7 +128,11 @@ export default function Login() {
 
           {/* Submit Button */}
           <Form.Item>
-            <LoginPageButton loading={isLoading} text="Sign in" />
+            <LoginPageButton
+              loading={isLoading}
+              disabled={isLoading}
+              text="Sign in"
+            />
           </Form.Item>
         </Form>
       </div>

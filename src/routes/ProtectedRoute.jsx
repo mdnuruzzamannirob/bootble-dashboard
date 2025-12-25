@@ -20,7 +20,7 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     if (userData) {
-      dispatch(setUser(userData?.data || userData));
+      dispatch(setUser(userData?.user ?? null));
     }
   }, [userData, dispatch]);
 

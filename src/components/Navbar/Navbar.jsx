@@ -1,24 +1,43 @@
-import React from 'react'
-import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Space, Button } from 'antd';
+import { Avatar, Badge } from "antd";
 import { IoMdNotificationsOutline } from "react-icons/io";
-import { Link } from 'react-router-dom';
-import ProfileImg from '/images/robert_smith.png'
+import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+
 export default function Navbar() {
+  const { user } = useAuth();
+
   return (
-    <div className='flex items-center gap-3 my-[24px] pr-12 justify-end '> 
-      <div className='h-[42px] w-[42px] bg-[#121030] rounded-full mr-6 flex  justify-center items-center'>
-        <Link to="/notifications"><IoMdNotificationsOutline className='text-white h-[24px] w-[24px] '/></Link>
-        
-      </div>
-      <img className='h-[44px] w-[44px] rounded-full' src={ProfileImg} alt="image" />
-      
-      
-       <Button color="default" variant="link" className='poppins-medium'>
-           <Link to="/profile">Robert Smith</Link>
-          </Button>
-          
-      
+    <div className="flex items-center justify-end gap-6 my-6 pr-12">
+      {/* Notification Icon with Badge */}
+      <Link
+        to="/notifications"
+        className="relative size-10 bg-white  rounded-full flex justify-center items-center text-[#121030]"
+      >
+        <Badge dot offset={[-2, 4]} color="red">
+          <IoMdNotificationsOutline size={24} />
+        </Badge>
+      </Link>
+
+      {/* Profile Section */}
+      <Link to="/profile" className="flex items-center gap-3 ">
+        <div className="text-right">
+          <p className="text-sm font-semibold text-gray-900 leading-none">
+            {user?.fullName || "Guest User"}
+          </p>
+          <p className="text-[12px] text-gray-500 capitalize mt-1">
+            {user?.role || "Member"}
+          </p>
+        </div>
+
+        <Avatar
+          size={44}
+          src={user?.profilePhoto?.url}
+          alt="User Profile"
+          className="border-2 border-white shadow-sm "
+        >
+          {user?.fullName?.charAt(0)}
+        </Avatar>
+      </Link>
     </div>
-  )
+  );
 }
