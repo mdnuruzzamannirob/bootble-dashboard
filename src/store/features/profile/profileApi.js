@@ -9,6 +9,7 @@ export const profileApi = baseApi.injectEndpoints({
         method: "PUT",
         body: data,
       }),
+      invalidatesTags: ["Auth"],
     }),
 
     // CHANGE PASSWORD

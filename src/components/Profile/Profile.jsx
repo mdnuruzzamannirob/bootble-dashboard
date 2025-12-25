@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { Tabs, Input, Avatar, message, Upload, Button } from "antd";
 import { IoCameraOutline } from "react-icons/io5";
 import BackButton from "../SharedComponents/BackButton";
-import PrimaryButton from "../SharedComponents/PrimaryButton";
 import { useAuth } from "@/hooks/useAuth";
+import { useGetMeQuery } from "@/store/features/auth/authApi"; // getMe query import
 import {
   useChangePasswordMutation,
   useUpdateProfileMutation,
@@ -15,11 +15,14 @@ const { Password } = Input;
 
 export default function Profile() {
   const { user } = useAuth();
-  const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
+  const { refetch } = useGetMeQuery();
+  const [updateProfile] = useUpdateProfileMutation();
   const [changePassword, { isLoading: isChangingPass }] =
     useChangePasswordMutation();
 
-  // State matching your JSON structure
+  const [isTextUpdating, setIsTextUpdating] = useState(false);
+  const [isImageUpdating, setIsImageUpdating] = useState(false);
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -33,7 +36,6 @@ export default function Profile() {
     confirmPassword: "",
   });
 
-  // Dynamic data loading
   useEffect(() => {
     if (user) {
       setFormData({
@@ -45,41 +47,59 @@ export default function Profile() {
     }
   }, [user]);
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  // --- Logic 1: Profile Image Update ---
+  const handleImageUpload = async (file) => {
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error("Image must be smaller than 2MB!");
+      return false;
+    }
+
+    const data = new FormData();
+    data.append("profilePhoto", file);
+
+    setIsImageUpdating(true);
+    try {
+      await updateProfile(data).unwrap();
+      await refetch();
+      message.success("Profile picture updated!");
+    } catch (err) {
+      message.error(err?.data?.message || "Image upload failed");
+    } finally {
+      setIsImageUpdating(false);
+    }
+    return false;
   };
 
-  const handlePasswordChange = (e) => {
-    setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
-  };
-
-  // 1. Update Profile Logic
+  // --- Logic 2: Profile Info (Text) Update ---
   const handleUpdateProfile = async () => {
+    setIsTextUpdating(true);
     try {
       await updateProfile({
         fullName: formData.fullName,
         contactNumber: formData.contactNumber,
         location: formData.location,
       }).unwrap();
+      await refetch(); // Update er por getMe call
       message.success("Profile updated successfully!");
     } catch (err) {
       message.error(err?.data?.message || "Failed to update profile");
+    } finally {
+      setIsTextUpdating(false); // Button loading off
     }
   };
 
-  // 2. Change Password Logic
+  const handleInputChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handlePasswordChange = (e) =>
+    setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
+
   const handleChangePassword = async () => {
-    if (!passwordData.currentPassword || !passwordData.newPassword) {
-      return message.warning("Please fill all password fields");
-    }
-    if (passwordData.newPassword === passwordData.currentPassword) {
-      return message.error(
-        "New password must be different from current password!"
-      );
-    }
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      return message.error("New passwords do not match!");
-    }
+    if (!passwordData.currentPassword || !passwordData.newPassword)
+      return message.warning("Please fill all fields");
+    if (passwordData.newPassword !== passwordData.confirmPassword)
+      return message.error("Passwords do not match!");
+
     try {
       await changePassword({
         currentPassword: passwordData.currentPassword,
@@ -96,23 +116,46 @@ export default function Profile() {
     }
   };
 
+  const buttonStyle = {
+    backgroundColor: "#121030",
+    border: "none",
+    color: "#FEFEFE",
+    borderRadius: 4,
+    height: "48px",
+    padding: "0 44px",
+    display: "flex",
+    alignItems: "center",
+    fontSize: 16,
+  };
+
   return (
     <div className="rounded-[8px] bg-white shadow-lg p-12">
       <BackButton text="Profile" />
 
-      {/* Avatar Section */}
       <div className="flex flex-col items-center">
         <div className="relative group">
           <Avatar
             size={110}
             src={user?.profilePhoto?.url}
-            className="border-4 border-gray-100 shadow-sm"
+            className={`border-4 border-gray-100 shadow-sm ${
+              isImageUpdating ? "opacity-40" : ""
+            }`}
           >
             {user?.fullName?.charAt(0)}
           </Avatar>
-          <Upload showUploadList={false} accept="image/*">
-            <div className="absolute bottom-1 right-1 bg-[#121030] rounded-full p-2 text-white cursor-pointer hover:bg-blue-600 transition-colors shadow-md">
-              <IoCameraOutline size={20} />
+
+          <Upload
+            showUploadList={false}
+            beforeUpload={handleImageUpload}
+            accept="image/*"
+            disabled={isImageUpdating}
+          >
+            <div className="absolute bottom-1 right-1 bg-[#121030] rounded-full p-2 text-white cursor-pointer shadow-md">
+              {isImageUpdating ? (
+                <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
+              ) : (
+                <IoCameraOutline size={20} />
+              )}
             </div>
           </Upload>
         </div>
@@ -126,78 +169,67 @@ export default function Profile() {
         <TabPane tab="Edit Profile" key="1">
           <div className="space-y-5 max-w-xl mx-auto mt-6">
             <div className="grid grid-cols-1 gap-4 text-[#333]">
+              {/* Inputs ... */}
               <div className="space-y-1">
                 <label className="font-medium">User Name</label>
                 <Input
-                  name="fullName" // Matched with state
+                  name="fullName"
                   value={formData.fullName}
                   onChange={handleInputChange}
-                  className="py-2.5 px-4 rounded-md border-gray-400"
+                  className="py-2.5 px-4"
                 />
               </div>
               <div className="space-y-1">
                 <label className="font-medium">Email</label>
                 <Input
-                  name="email"
                   value={formData.email}
                   disabled
-                  className="py-2.5 px-4 rounded-md bg-gray-50 text-gray-400"
+                  className="py-2.5 px-4 bg-gray-50 opacity-60"
                 />
               </div>
               <div className="space-y-1">
                 <label className="font-medium">Contact no</label>
                 <Input
-                  name="contactNumber" // Matched with state
+                  name="contactNumber"
                   value={formData.contactNumber}
                   onChange={handleInputChange}
-                  className="py-2.5 px-4 rounded-md border-gray-400"
+                  className="py-2.5 px-4"
                 />
               </div>
               <div className="space-y-1">
                 <label className="font-medium">Address</label>
                 <Input
-                  name="location" // Matched with state
+                  name="location"
                   value={formData.location}
                   onChange={handleInputChange}
-                  className="py-2.5 px-4 rounded-md border-gray-400"
+                  className="py-2.5 px-4"
                 />
               </div>
             </div>
             <div className="flex justify-center pt-6">
-              <div onClick={handleUpdateProfile}>
-                <Button
-                  loading={isUpdating}
-                  disabled={isUpdating}
-                  style={{
-                    backgroundColor: "#121030",
-                    border: "none",
-                    color: "#FEFEFE",
-                    borderRadius: 4,
-                    height: "48px",
-                    padding: "0 44px",
-                    display: "flex",
-                    alignItems: "center",
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: 16,
-                  }}
-                >
-                  Save Changes
-                </Button>
-              </div>
+              <Button
+                loading={isTextUpdating}
+                disabled={isTextUpdating}
+                onClick={handleUpdateProfile}
+                style={buttonStyle}
+              >
+                Save Changes
+              </Button>
             </div>
           </div>
         </TabPane>
 
         <TabPane tab="Change Password" key="2">
           <div className="space-y-5 max-w-xl mx-auto mt-6">
+            {/* Password fields ... */}
             <div className="space-y-1">
               <label className="font-medium">Current Password</label>
               <Password
-                name="currentPassword" // Matched with state
+                name="currentPassword"
                 value={passwordData.currentPassword}
                 onChange={handlePasswordChange}
                 placeholder="**********"
-                className="py-2.5 px-4 border-gray-400"
+                className="py-2.5 px-4"
               />
             </div>
             <div className="space-y-1">
@@ -207,7 +239,7 @@ export default function Profile() {
                 value={passwordData.newPassword}
                 onChange={handlePasswordChange}
                 placeholder="**********"
-                className="py-2.5 px-4 border-gray-400"
+                className="py-2.5 px-4"
               />
             </div>
             <div className="space-y-1">
@@ -217,30 +249,17 @@ export default function Profile() {
                 value={passwordData.confirmPassword}
                 onChange={handlePasswordChange}
                 placeholder="**********"
-                className="py-2.5 px-4 border-gray-400"
+                className="py-2.5 px-4"
               />
             </div>
             <div className="flex justify-center pt-10">
-              <div onClick={handleChangePassword}>
-                <Button
-                  loading={isChangingPass}
-                  disabled={isChangingPass}
-                  style={{
-                    backgroundColor: "#121030",
-                    border: "none",
-                    color: "#FEFEFE",
-                    borderRadius: 4,
-                    height: "48px",
-                    padding: "0 44px",
-                    display: "flex",
-                    alignItems: "center",
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: 16,
-                  }}
-                >
-                  Update Password
-                </Button>
-              </div>
+              <Button
+                loading={isChangingPass}
+                onClick={handleChangePassword}
+                style={buttonStyle}
+              >
+                Update Password
+              </Button>
             </div>
           </div>
         </TabPane>
