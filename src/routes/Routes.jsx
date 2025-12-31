@@ -32,6 +32,7 @@ import Profile from "../components/Profile/Profile";
 import AboutUs from "../components/Settings/AboutUs";
 import TermsConditions from "../components/Settings/TermsConditions";
 import PrivacyPolicy from "../components/Settings/PrivacyPolicy";
+import UserDetails from "@/components/User/UserDetails";
 
 const router = createBrowserRouter([
   {
@@ -43,7 +44,11 @@ const router = createBrowserRouter([
     ),
     children: [
       { path: "/", element: <Dashboard /> },
-      { path: "/user-management", element: <User /> },
+      {
+        path: "/user-management",
+        element: <User />,
+        children: [{ path: "/user-management/:id", element: <UserDetails /> }],
+      },
       { path: "/category", element: <Category /> },
       { path: "/products", element: <Products /> },
       { path: "/subscriptions", element: <Subscriptions /> },
