@@ -2,7 +2,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   Mail,
   Loader2,
-  Flame,
   Footprints,
   Moon,
   Droplets,
@@ -14,11 +13,10 @@ import {
   Zap,
   Activity,
   AlertCircle,
-  CheckCircle2,
   ChevronLeft,
+  LayoutGrid,
 } from "lucide-react";
 import { toast } from "react-toastify";
-import BackButton from "../SharedComponents/BackButton";
 import {
   useGetUserDetailsQuery,
   useBlockUnblockUserMutation,
@@ -176,12 +174,14 @@ export default function UserDetails() {
                 label="Last Update"
                 value={new Date(user?.updatedAt).toLocaleDateString()}
               />
-              <InfoRow
-                label="Trial Ends"
-                value={new Date(
-                  user?.subscription.trialEnds
-                ).toLocaleDateString()}
-              />
+              {user?.subscription.plan !== "free" && (
+                <InfoRow
+                  label="Trial Ends"
+                  value={new Date(
+                    user?.subscription.trialEnds
+                  ).toLocaleDateString()}
+                />
+              )}
               <InfoRow
                 label="Height Unit"
                 value={
@@ -239,33 +239,33 @@ export default function UserDetails() {
           </div>
 
           {/* Life-time Statistics */}
-          <div className="bg-slate-900 rounded-2xl p-6 text-white">
-            <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-5 flex items-center gap-2">
-              <Activity className="size-4 text-indigo-400" /> Lifetime
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 ">
+            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-5 flex items-center gap-2">
+              <LayoutGrid className="size-4 text-blue-500" /> Lifetime
               Statistics
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-4">
-              <StatItem
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-y-8 gap-x-4 pt-2">
+              <StatCard
                 label="Days Tracked"
                 value={user?.statistics.health.daysTracked}
               />
-              <StatItem
+              <StatCard
                 label="Total Steps"
-                value={user?.statistics.health.totalSteps}
+                value={user?.statistics.health.totalSteps?.toLocaleString()}
               />
-              <StatItem
+              <StatCard
                 label="Total Burned"
                 value={`${user?.statistics.health.totalCaloriesBurned} kcal`}
               />
-              <StatItem
+              <StatCard
                 label="Sleep Logged"
                 value={`${user?.statistics.health.totalSleepHours} hrs`}
               />
-              <StatItem
+              <StatCard
                 label="Water Intake"
                 value={`${user?.statistics.health.totalWaterIntake} L`}
               />
-              <StatItem
+              <StatCard
                 label="Transactions"
                 value={user?.statistics.totalTransactions}
               />
@@ -303,13 +303,15 @@ function TargetItem({ icon, label, value }) {
   );
 }
 
-function StatItem({ label, value }) {
+function StatCard({ label, value }) {
   return (
-    <div>
-      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">
+    <div className="border-l-2 border-slate-100 pl-4">
+      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
         {label}
       </p>
-      <p className="text-xl font-bold text-white mt-0.5">{value}</p>
+      <p className="text-xl font-black text-slate-800 tracking-tight">
+        {value}
+      </p>
     </div>
   );
 }
