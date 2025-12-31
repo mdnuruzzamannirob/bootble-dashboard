@@ -102,7 +102,7 @@ export default function User() {
   const endIndex = Math.min(currentPage * ITEMS_PER_PAGE, totalItems);
 
   return (
-    <div className="p-4 lg:p-6 max-w-[1600px] mx-auto">
+    <>
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <BackButton text="User Management" />
@@ -111,7 +111,7 @@ export default function User() {
           <input
             type="text"
             placeholder="Search users..."
-            className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all shadow-sm"
+            className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all "
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -119,7 +119,7 @@ export default function User() {
       </div>
 
       {/* Table Content */}
-      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead className="bg-slate-50/50 h-16 border-b border-slate-200">
@@ -145,7 +145,10 @@ export default function User() {
               {isFetching ? (
                 [...Array(ITEMS_PER_PAGE)].map((_, i) => (
                   <tr key={i} className="animate-pulse">
-                    <td colSpan="5" className="px-6 py-4 h-16 bg-slate-50/20" />
+                    <td
+                      colSpan="5"
+                      className="px-6 py-4 h-[73px] bg-slate-50/20"
+                    />
                   </tr>
                 ))
               ) : users.length > 0 ? (
@@ -198,10 +201,10 @@ export default function User() {
                     </td>
                     <td className="px-6 py-4 text-center">
                       <span
-                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase ${
+                        className={`inline-flex items-center gap-1.5 px-3 border py-1.5 rounded-lg text-[10px] font-bold uppercase ${
                           user.isBlocked
-                            ? "bg-red-50 text-red-600"
-                            : "bg-emerald-50 text-emerald-600"
+                            ? "bg-red-50 text-red-600 border-red-100"
+                            : "bg-emerald-50 text-emerald-600 border-emerald-100"
                         }`}
                       >
                         <span
@@ -333,6 +336,6 @@ export default function User() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
