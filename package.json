@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^2.11.2",
     "@tailwindcss/vite": "^4.1.11",
     "antd": "^6.1.1",
+    "jodit-react": "^5.2.38",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.562.0",
     "react": "^19.1.0",

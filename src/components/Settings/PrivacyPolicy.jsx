@@ -1,45 +1,99 @@
-import BackButton from '../SharedComponents/BackButton';
-import FontFormatSection from '../SharedComponents/FontFormatSection';
-import Intro from '../SharedComponents/Intro';
-import Details from '../SharedComponents/Details';
+import { useEffect, useState, useRef } from "react";
+import {
+  useGetPrivacyPolicyQuery,
+  useUpdatePrivacyPolicyMutation,
+} from "@/store/features/cms/cmsApi";
+import JoditEditor from "jodit-react";
+import { joditConfig } from "@/utils/joditConfig";
+import PrimaryButton from "../SharedComponents/PrimaryButton";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { ChevronLeft } from "lucide-react";
+import { decodeHtml } from "@/utils/decodeHtml";
 
-import PrimaryButton from '../SharedComponents/PrimaryButton';
+export default function PrivacyPolicyAdmin() {
+  const editor = useRef(null);
+  const { data, isLoading } = useGetPrivacyPolicyQuery();
+  const [updatePrivacy, { isLoading: isSaving }] =
+    useUpdatePrivacyPolicyMutation();
 
-export default function PrivacyPolicy() {
+  const [content, setContent] = useState("");
+  const [title, setTitle] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (data?.privacy) {
+      setContent(decodeHtml(data.privacy.content || ""));
+      setTitle(data.privacy.title || "Privacy Policy");
+    }
+  }, [data]);
+
+  const handleSave = async () => {
+    try {
+      await updatePrivacy({
+        title,
+        content,
+        version: data?.privacy.version || "1.0",
+      }).unwrap();
+      toast.success("Privacy Policy updated successfully");
+    } catch (err) {
+      toast.error("Failed to update Privacy Policy");
+    }
+  };
+
+  if (isLoading) {
     return (
-        <>
-            
-                <div className="rounded-[8px] bg-white shadow-lg p-12 ">
-                    {/* Header */}
-                    <div className="flex justify-between items-center mb-6">
-                        <div className="flex items-center gap-2">
-                            <BackButton text="Privacy Policy"></BackButton>
-                            
-                        </div>
+      <div className="space-y-5">
+        <div className="h-12 w-1/3 bg-slate-200 animate-pulse rounded-lg" />
+        <div className="h-[550px] w-full bg-slate-200 animate-pulse rounded-xl" />
+        <div className="mx-auto h-10 w-40 bg-slate-200 animate-pulse rounded-xl" />
+      </div>
+    );
+  }
 
-                        {/* justify end */}
-                        <FontFormatSection></FontFormatSection>
-                    </div>
+  return (
+    <div className="space-y-5">
+      {/* Top Bar */}
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => navigate("/user-management")}
+          className="p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors group"
+        >
+          <ChevronLeft
+            size={20}
+            className="group-hover:-translate-x-0.5 transition-transform"
+          />
+        </button>
+        <div>
+          <h1 className="text-xl font-bold text-slate-800 tracking-tight">
+            Privacy Policy
+          </h1>
+          <p className="text-xs text-slate-500">
+            Edit and publish your latest privacy policy
+          </p>
+        </div>
+      </div>
 
+      {/* Main Editor Card */}
+      <JoditEditor
+        ref={editor}
+        value={content}
+        config={{
+          ...joditConfig,
+          height: 550,
+          placeholder: "Start writing content...",
+        }}
+        onBlur={(newContent) => setContent(newContent)}
+      />
 
-                    {/* Intro */}
-                    <div className='mb-4'>
-                        <h3 className='font-[Inter] font-medium text-[20px] mb-4'>1. Privacy</h3>
-                        <Intro></Intro>
-                    </div>
-
-                    <div>
-                        <h3 className='font-[Inter] font-medium text-[20px] mb-4'>2. Policy</h3>
-                        <Details></Details>
-                    </div>
-
-                    {/* Button End */}
-                    <div className="flex justify-center mt-24">
-                        <PrimaryButton text="Save Change"></PrimaryButton>
-                    </div>
-
-                </div>
-            
-        </>
-    )
+      <div className="flex items-center justify-center ">
+        <PrimaryButton
+          text={isSaving ? "Publishing..." : "Save Changes"}
+          disabled={isSaving}
+          onClick={handleSave}
+          className="px-8 shadow-md"
+        />
+      </div>
+    </div>
+  );
 }
